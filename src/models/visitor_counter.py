@@ -23,7 +23,10 @@ class VisitorCounterSettings(db.Model):
     
     def update_base_count(self):
         """تحديث الرقم العشوائي الأساسي"""
-        self.current_base_count = random.randint(self.min_base_count, self.max_base_count)
+        # التأكد من أن النطاق صحيح
+        min_count = min(self.min_base_count, self.max_base_count)
+        max_count = max(self.min_base_count, self.max_base_count)
+        self.current_base_count = random.randint(min_count, max_count)
         self.last_update = datetime.utcnow()
         db.session.commit()
         return self.current_base_count
